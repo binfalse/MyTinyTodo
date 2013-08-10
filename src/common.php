@@ -1,5 +1,8 @@
 <?php
 
+if(!defined('MTTPATH')) define('MTTPATH', dirname(__FILE__) .'/');
+$VERSION = trim(file_get_contents (MTTPATH. 'VERSION'));
+
 function htmlarray($a, $exclude=null)
 {
 	htmlarray_ref($a, $exclude);
@@ -71,19 +74,21 @@ class Config
 		'mtt_url' => array('default'=>'', 'type'=>'s'),
 		'title' => array('default'=>'', 'type'=>'s'),
 		'lang' => array('default'=>'en', 'type'=>'s'),
+		'username' => array('default'=>'', 'type'=>'s'),
 		'password' => array('default'=>'', 'type'=>'s'),
+		'signature' => array('default'=>'', 'type'=>'s'),
 		'smartsyntax' => array('default'=>1, 'type'=>'i'),
 		'timezone' => array('default'=>'UTC', 'type'=>'s'),
 		'autotag' => array('default'=>1, 'type'=>'i'),
 		'duedateformat' => array('default'=>1, 'type'=>'i'),
 		'firstdayofweek' => array('default'=>1, 'type'=>'i'),
-		'session' => array('default'=>'files', 'type'=>'s', 'options'=>array('files','default')),
 		'clock' => array('default'=>24, 'type'=>'i', 'options'=>array(12,24)),
 		'dateformat' => array('default'=>'j M Y', 'type'=>'s'),
 		'dateformat2' => array('default'=>'n/j/y', 'type'=>'s'),
 		'dateformatshort' => array('default'=>'j M', 'type'=>'s'),
 		'template' => array('default'=>'default', 'type'=>'s'),
 		'showdate' => array('default'=>0, 'type'=>'i'),
+		'defaultlist' => array('default'=>1, 'type'=>'i'),
 	);
 
 	public static $config;

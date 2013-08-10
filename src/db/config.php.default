@@ -24,9 +24,14 @@ $config['mtt_url'] = '';
 # Language pack
 $config['lang'] = "en";
 
-# Specify password here to protect your tasks from modification,
+# Specify username and password here to protect your tasks from modification,
 #  or leave empty that everyone could read/write todolist
+$config['username'] = "";
 $config['password'] = "";
+
+# Define a signature used for API access. Feel free to choose it as long as possible,
+# no need to remember the signature.
+$config['signature'] = "";
 
 # To disable smart syntax uncomment the line below
 #$config['smartsyntax'] = 0;
@@ -43,9 +48,6 @@ $config['duedateformat'] = 1;
 # First day of week: 0-Sunday, 1-Monday, 2-Tuesday, .. 6-Saturday
 $config['firstdayofweek'] = 1;
 
-# select session handling mechanism: files or default (php default)
-$config['session'] = 'files';
-
 # Date/time formats
 $config['clock'] = 24;
 $config['dateformat'] = 'j M Y';
@@ -53,5 +55,10 @@ $config['dateformatshort'] = 'j M';
 
 # Show task date in list
 $config['showdate'] = 0;
+
+
+# Default Todo list (e.g. for Mail-Import).
+$config['defaultlist'] = 1;
+
 
 ?>

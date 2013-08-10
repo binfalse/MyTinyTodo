@@ -22,9 +22,14 @@ if(isset($_POST['save']))
 	$langs = getLangs();
 	Config::$params['lang']['options'] = array_keys($langs);
 	Config::set('lang', _post('lang'));
-	if(isset($_POST['password']) && $_POST['password'] != '') Config::set('password', $_POST['password']);
+	if(isset($_POST['password']) && $_POST['password'] != '')
+	{
+		Config::set('password', $_POST['password']);
+	}
 	elseif(!_post('allowpassword')) Config::set('password', '');
 	Config::set('smartsyntax', (int)_post('smartsyntax'));
+	Config::set('username', $_POST['username']);
+	Config::set('defaultlist', $_POST['defaultlist']);
 	// Do not set invalid timezone
 	try {
 	    $tz = trim(_post('timezone'));
@@ -34,7 +39,6 @@ if(isset($_POST['save']))
 	catch (Exception $e) {
 	}
 	Config::set('autotag', (int)_post('autotag'));
-	Config::set('session', _post('session'));
 	Config::set('firstdayofweek', (int)_post('firstdayofweek'));
 	Config::set('clock', (int)_post('clock'));
 	Config::set('dateformat', _post('dateformat'));
@@ -128,7 +132,14 @@ function timezoneIdentifiers()
     return $a;
 }
 
+$tmplists = loadLists ($db, '');
+$lists = array ();
+foreach ($tmplists['list'] as $k => $v)
+	$lists[$v['id']] = $v['name'];
+
+
 header('Content-type:text/html; charset=utf-8');
+
 ?>
 
 <div><a href="#" class="mtt-back-button"><?php _e('go_back');?></a></div>
@@ -154,13 +165,21 @@ header('Content-type:text/html; charset=utf-8');
 <tr>
 <th><?php _e('set_protection');?>:</th>
 <td>
- <label><input type="radio" name="allowpassword" value="1" <?php if(_c('password')!='') echo 'checked="checked"'; ?> onclick='$(this.form).find("input[name=password]").attr("disabled",false)' /><?php _e('set_enabled');?></label> <br/>
- <label><input type="radio" name="allowpassword" value="0" <?php if(_c('password')=='') echo 'checked="checked"'; ?> onclick='$(this.form).find("input[name=password]").attr("disabled","disabled")' /><?php _e('set_disabled');?></label> <br/>
-</td></tr>
+<label><input type="radio" name="allowpassword" value="1" <?php if(_c('password')!='') echo 'checked="checked"'; ?> onclick='$(this.form).find("input[name=password]").attr("disabled",false) && $(this.form).find("input[name=username]").attr("disabled",false)' /><?php _e('set_enabled');?></label> <br/>
+<label><input type="radio" name="allowpassword" value="0" <?php if(_c('password')=='') echo 'checked="checked"'; ?> onclick='$(this.form).find("input[name=password]").attr("disabled","disabled") && $(this.form).find("input[name=username]").attr("disabled","disabled")' /><?php _e('set_disabled');?></label> <br/>
+ </td></tr>
+ 
+ <tr>
+ <th><?php _e('set_user');?>:</th>
+ <td> <input type="text" name="username" value="<?php echo _c('username');?>" <?php if(_c('password')=='') echo "disabled"; ?> />
+ </td>
+ </tr>
 
 <tr>
 <th><?php _e('set_newpass');?>:<br/><span class="descr"><?php _e('set_newpass_descr');?></span></th>
-<td> <input type="password" name="password" <?php if(_c('password')=='') echo "disabled"; ?> /> </td>
+<td> <input type="password" name="password" <?php if(_c('password')=='') echo "disabled"; ?> /><br />
+<?php _e('signature');?>: <?php echo _c('signature');?> 
+</td>
 </tr>
 
 <tr>
@@ -177,12 +196,7 @@ header('Content-type:text/html; charset=utf-8');
  <label><input type="radio" name="autotag" value="0" <?php if(!_c('autotag')) echo 'checked="checked"'; ?> /><?php _e('set_disabled');?></label>
 </td></tr>
 
-<tr>
-<th><?php _e('set_sessions');?>:</th>
-<td>
- <label><input type="radio" name="session" value="default" <?php if(_c('session')=='default') echo 'checked="checked"'; ?> /><?php _e('set_sessions_php');?></label> <br/>
- <label><input type="radio" name="session" value="files" <?php if(_c('session')=='files') echo 'checked="checked"'; ?> /><?php _e('set_sessions_files');?></label> <span class="descr">(&lt;mytinytodo_dir&gt;/tmp/sessions)</span>
-</td></tr>
+
 
 <tr>
 <th><?php _e('set_timezone');?>:</th>
@@ -238,6 +252,13 @@ header('Content-type:text/html; charset=utf-8');
 <td>
  <label><input type="radio" name="showdate" value="1" <?php if(_c('showdate')) echo 'checked="checked"'; ?> /><?php _e('set_enabled');?></label> <br/>
  <label><input type="radio" name="showdate" value="0" <?php if(!_c('showdate')) echo 'checked="checked"'; ?> /><?php _e('set_disabled');?></label>
+</td>
+</tr>
+
+<tr>
+<th><?php _e('set_default_list');?>:<br/><span class="descr"><?php _e('set_default_list_descr');?></th>
+<td>
+	<select name="defaultlist"><?php echo selectOptions($lists, _c('defaultlist')); ?></select>
 </td>
 </tr>
 

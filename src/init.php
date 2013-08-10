@@ -46,16 +46,8 @@ require_once(MTTPATH. 'lang/'.Config::get('lang').'.php');
 $_mttinfo = array();
 
 $needAuth = (Config::get('password') != '') ? 1 : 0;
-if($needAuth && !isset($dontStartSession))
+if($needAuth && !isset($dontStartSession) && !isset ($_GET['API']))
 {
-	if(Config::get('session') == 'files')
-	{
-		session_save_path(MTTPATH. 'tmp/sessions');
-		ini_set('session.gc_maxlifetime', '1209600'); # 14 days session file minimum lifetime
-		ini_set('session.gc_probability', 1);
-		ini_set('session.gc_divisor', 10);
-	}
-
 	ini_set('session.use_cookies', true);
 	ini_set('session.use_only_cookies', true);
 	session_set_cookie_params(1209600, url_dir(Config::get('url')=='' ? $_SERVER['REQUEST_URI'] : Config::get('url'))); # 14 days session cookie lifetime
@@ -63,8 +55,38 @@ if($needAuth && !isset($dontStartSession))
 	session_start();
 }
 
+function prepareList($row)
+{
+	$taskview = (int)$row['taskview'];
+	return array(
+		'id' => $row['id'],
+		'name' => htmlarray($row['name']),
+		'sort' => (int)$row['sorting'],
+		'published' => $row['published'] ? 1 :0,
+		'showCompl' => $taskview & 1 ? 1 : 0,
+		'showNotes' => $taskview & 2 ? 1 : 0,
+		'hidden' => $taskview & 4 ? 1 : 0,
+		);
+}
+
+function loadLists ($db, $sqlWhere)
+{
+	$t = array();
+	$t['total'] = 0;
+	$q = $db->dq("SELECT * FROM {$db->prefix}lists $sqlWhere ORDER BY ow ASC, id ASC");
+	while($r = $q->fetch_assoc($q))
+	{
+		$t['total']++;
+		$l = prepareList($r);
+		$t['list'][$l['id']] = $l;
+	}
+	return $t;
+}
+
 function is_logged()
 {
+	if (Config::get('signature') != '' && (_get("signature") == Config::get('signature') || _post("signature") == Config::get('signature')))
+		return true;
 	if(!isset($_SESSION['logged']) || !$_SESSION['logged']) return false;
 	return true;
 }
@@ -148,9 +170,16 @@ function get_mttinfo($v)
 
 function jsonExit($data)
 {
-	header('Content-type: application/json; charset=utf-8');
-	echo json_encode($data);
-	exit;
+	if (!isset ($_GET['API']))
+	{
+		header('Content-type: application/json; charset=utf-8');
+		echo json_encode($data);
+		exit;
+	}
+	else
+	{
+		echo json_encode($data);
+	}
 }
 
 ?>

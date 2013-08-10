@@ -45,8 +45,8 @@ else
 }
 
 $lastVer = '1.4';
-echo '<html><head><meta name="robots" content="noindex,nofollow"><title>myTinyTodo @VERSION Setup</title></head><body>'; 
-echo "<big><b>myTinyTodo @VERSION Setup</b></big><br><br>";
+echo '<html><head><meta name="robots" content="noindex,nofollow"><title>myTinyTodo '.$VERSION.' Setup</title></head><body>'; 
+echo "<big><b>myTinyTodo $VERSION Setup</b></big><br><br>";
 
 # determine current installed version
 $ver = get_ver($db, $dbtype);
@@ -84,6 +84,7 @@ if(!$ver)
 		if(!is_writable('./db/config.php')) {
 			exitMessage("Config file ('db/config.php') is not writable.");
 		}
+		Config::set('signature', md5(uniqid(rand(), true)));
 		Config::save();
 		exitMessage("This will create myTinyTodo database <form method=post><input type=hidden name=install value=1><input type=submit value=' Install '></form>");
 	}

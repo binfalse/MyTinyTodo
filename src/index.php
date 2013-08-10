@@ -15,6 +15,9 @@ if(!is_int(Config::get('firstdayofweek')) || Config::get('firstdayofweek')<0 || 
 
 define('TEMPLATEPATH', MTTPATH. 'themes/'.Config::get('template').'/');
 
-require(TEMPLATEPATH. 'index.php');
 
+if (is_logged () || Config::get('password') == '')
+	require(TEMPLATEPATH. 'index.php');
+else
+	require(TEMPLATEPATH. 'login.php');
 ?>

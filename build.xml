@@ -1,0 +1,17 @@
+<project name="MyTinyTodo" default="dist" basedir=".">
+	<description>
+		MyTinyTodo - Simple way to manage your todo list in AJAX style. 
+	</description>
+	
+	<loadfile property="app.version" srcFile="src/VERSION"/>
+	<property name="app.name" value="MyTinyTodo" />
+	<property name="src" location="src" />
+	
+	<target name="dist">
+		<zip destfile="${app.name}-${app.version}.zip">
+			<zipfileset dir="${src}" prefix="mytinytodo"
+				excludes="db/config.php" />
+		</zip>
+	</target>
+	
+</project>

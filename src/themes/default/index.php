@@ -4,15 +4,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php mttinfo('title'); ?></title>
-<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>style.css?v=@VERSION" media="all" />
+<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>style.css?v=<?php echo $VERSION; ?>" media="all" />
 <?php if(Config::get('rtl')): ?>
-<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>style_rtl.css?v=@VERSION" media="all" />
+<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>style_rtl.css?v=<?php echo $VERSION; ?>" media="all" />
 <?php endif; ?>
 <?php if(isset($_GET['pda'])): ?>
 <meta name="viewport" id="viewport" content="width=device-width" />
-<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>pda.css?v=@VERSION" media="all" />
+<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>pda.css?v=<?php echo $VERSION; ?>" media="all" />
 <?php else: ?>
-<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>print.css?v=@VERSION" media="print" />
+<link rel="stylesheet" type="text/css" href="<?php mttinfo('template_url'); ?>print.css?v=<?php echo $VERSION; ?>" media="print" />
 <?php endif; ?>
 </head>
 
@@ -21,9 +21,9 @@
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>jquery/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>jquery/jquery-ui-1.8.7.custom.min.js"></script>
 <script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>jquery/jquery.autocomplete-1.1.js"></script>
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo.js?v=@VERSION"></script>
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo_lang.php?v=@VERSION"></script>
-<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo_ajax_storage.js?v=@VERSION"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo.js?v=<?php echo $VERSION; ?>"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo_lang.php?v=<?php echo $VERSION; ?>"></script>
+<script type="text/javascript" src="<?php mttinfo('mtt_url'); ?>mytinytodo_ajax_storage.js?v=<?php echo $VERSION; ?>"></script>
 
 <script type="text/javascript">
 $().ready(function(){
@@ -281,7 +281,7 @@ $().ready(function(){
 <div id="space"></div>
 </div>
 
-<div id="footer"><div id="footer_content">Powered by <strong><a href="http://www.mytinytodo.net/">myTinyTodo</a></strong> @VERSION </div></div>
+<div id="footer"><div id="footer_content">Powered by <strong><a href="http://www.mytinytodo.net/">myTinyTodo</a></strong> v<?php echo $VERSION; ?> </div></div>
 
 </div>
 </body>

@@ -6,25 +6,25 @@
 	Licensed under the GNU GPL v3 license. See file COPYRIGHT for details.
 */ 
 
-set_error_handler('myErrorHandler');
-set_exception_handler('myExceptionHandler');
+if (!isset ($_GET['API']))
+{
+	set_error_handler('myErrorHandler');
+	set_exception_handler('myExceptionHandler');
+}
 
-require_once('./init.php');
+if(!defined('MTTPATH'))
+	define('MTTPATH', dirname(__FILE__) .'/');
+
+require_once(MTTPATH.'init.php');
 
 $db = DBConnection::instance();
+
 
 if(isset($_GET['loadLists']))
 {
 	if($needAuth && !is_logged()) $sqlWhere = 'WHERE published=1';
 	else $sqlWhere = '';
-	$t = array();
-	$t['total'] = 0;
-	$q = $db->dq("SELECT * FROM {$db->prefix}lists $sqlWhere ORDER BY ow ASC, id ASC");
-	while($r = $q->fetch_assoc($q))
-	{
-		$t['total']++;
-		$t['list'][] = prepareList($r);
-	}
+	$t = loadLists ($db, $sqlWhere);
 	jsonExit($t);
 }
 elseif(isset($_GET['loadTasks']))
@@ -32,7 +32,6 @@ elseif(isset($_GET['loadTasks']))
 	stop_gpc($_GET);
 	$listId = (int)_get('list');
 	check_read_access($listId);
-
 	$sqlWhere = $inner = '';
 	if($listId == -1) {
 		$userLists = getUserListsSimple();
@@ -86,7 +85,9 @@ elseif(isset($_GET['loadTasks']))
 	elseif($sort == 4) $sqlSort .= "d_edited ASC, prio DESC, ow ASC";			// byDateModified
 	elseif($sort == 104) $sqlSort .= "d_edited DESC, prio ASC, ow DESC";		// byDateModified (reverse)
 	else $sqlSort .= "ow ASC";
-
+	
+	$lists = loadLists ($db, '');
+	
 	$t = array();
 	$t['total'] = 0;
 	$t['list'] = array();
@@ -94,7 +95,7 @@ elseif(isset($_GET['loadTasks']))
 	while($r = $q->fetch_assoc($q))
 	{
 		$t['total']++;
-		$t['list'][] = prepareTaskRow($r);
+		$t['list'][] = prepareTaskRow($r, $lists);
 	}
 	if(_get('setCompl') && have_write_access($listId)) {
 		$bitwise = (_get('compl') == 0) ? 'taskview & ~1' : 'taskview | 1';
@@ -141,7 +142,7 @@ elseif(isset($_GET['newTask']))
 	}
 	$db->ex("COMMIT");
 	$r = $db->sqa("SELECT * FROM {$db->prefix}todolist WHERE id=$id");
-	$t['list'][] = prepareTaskRow($r);
+	$t['list'][] = prepareTaskRow($r, loadLists ($db, ''));
 	$t['total'] = 1;
 	jsonExit($t);
 }
@@ -178,7 +179,7 @@ elseif(isset($_GET['fullNewTask']))
 	}
 	$db->ex("COMMIT");
 	$r = $db->sqa("SELECT * FROM {$db->prefix}todolist WHERE id=$id");
-	$t['list'][] = prepareTaskRow($r);
+	$t['list'][] = prepareTaskRow($r, loadLists ($db, ''));
 	$t['total'] = 1;
 	jsonExit($t);
 }
@@ -205,7 +206,7 @@ elseif(isset($_GET['completeTask']))
 	$t = array();
 	$t['total'] = 1;
 	$r = $db->sqa("SELECT * FROM {$db->prefix}todolist WHERE id=$id");
-	$t['list'][] = prepareTaskRow($r);
+	$t['list'][] = prepareTaskRow($r, loadLists ($db, ''));
 	jsonExit($t);
 }
 elseif(isset($_GET['editNote']))
@@ -251,7 +252,7 @@ elseif(isset($_GET['editTask']))
 	$db->ex("COMMIT");
 	$r = $db->sqa("SELECT * FROM {$db->prefix}todolist WHERE id=$id");
 	if($r) {
-		$t['list'][] = prepareTaskRow($r);
+		$t['list'][] = prepareTaskRow($r, loadLists ($db, ''));
 		$t['total'] = 1;
 	}
 	jsonExit($t);
@@ -299,7 +300,7 @@ elseif(isset($_POST['login']))
 }
 elseif(isset($_POST['logout']))
 {
-	unset($_SESSION['logged']);
+	if (isset ($_SESSION['logged'])) unset($_SESSION['logged']);
 	$t = array('logged' => 0);
 	jsonExit($t);
 }
@@ -439,7 +440,7 @@ elseif(isset($_GET['moveTask']))
 	$result = moveTask($id, $toId);
 	$t = array('total' => $result ? 1 : 0);
 	if($fromId == -1 && $result && $r = $db->sqa("SELECT * FROM {$db->prefix}todolist WHERE id=$id")) {
-		$t['list'][] = prepareTaskRow($r);
+		$t['list'][] = prepareTaskRow($r, loadLists ($db, ''));
 	}
 	jsonExit($t);
 }
@@ -519,7 +520,8 @@ elseif(isset($_GET['setHideList']))
 
 ###################################################################################################
 
-function prepareTaskRow($r)
+
+function prepareTaskRow($r, $lists)
 {
 	$lang = Lang::instance();
 	$dueA = prepare_duedate($r['duedate']);
@@ -534,6 +536,7 @@ function prepareTaskRow($r)
 		'id' => $r['id'],
 		'title' => escapeTags($r['title']),
 		'listId' => $r['list_id'],
+		'listName' => $lists['list'][$r['list_id']]['name'],
 		'date' => htmlarray($dCreated),
 		'dateInt' => (int)$r['d_created'],
 		'dateInline' => htmlarray(formatTime($formatCreatedInline, $r['d_created'])),
@@ -839,20 +842,6 @@ function moveTask($id, $listId)
 	$db->dq("UPDATE {$db->prefix}todolist SET list_id=?, ow=?, d_edited=? WHERE id=?", array($listId, $ow, time(), $id));
 	$db->ex("COMMIT");
 	return true;
-}
-
-function prepareList($row)
-{
-	$taskview = (int)$row['taskview'];
-	return array(
-		'id' => $row['id'],
-		'name' => htmlarray($row['name']),
-		'sort' => (int)$row['sorting'],
-		'published' => $row['published'] ? 1 :0,
-		'showCompl' => $taskview & 1 ? 1 : 0,
-		'showNotes' => $taskview & 2 ? 1 : 0,
-		'hidden' => $taskview & 4 ? 1 : 0,
-	);
 }
 
 function getUserListsSimple()

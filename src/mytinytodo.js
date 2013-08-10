@@ -528,8 +528,12 @@ var mytinytodo = window.mytinytodo = _mtt = {
 			var openListId = 0;
 			if(res && res.total)
 			{
+				var firstElem;
+				
 				// open required or first non-hidden list
-				for(var i=0; i<res.list.length; i++) {
+				for(var i in res.list) {
+					if (i == 0)
+						firstElem = res.list[i].id;
 					if(_mtt.options.openList) {
 						if(_mtt.options.openList == res.list[i].id) {
 							openListId = res.list[i].id;
@@ -546,7 +550,7 @@ var mytinytodo = window.mytinytodo = _mtt = {
 				if(_mtt.options.openList == -1) openListId = -1;
 				
 				// or open first if all list are hidden
-				if(!openListId) openListId = res.list[0].id;
+				if(!openListId) openListId = firstElem;//res.list[0].id;
 				
 				$.each(res.list, function(i,item){
 					tabLists.add(item);
