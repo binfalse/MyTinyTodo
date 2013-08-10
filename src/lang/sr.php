@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "корисник",
+		'set_user' => "Корисничко име",
+		'signature' => "потпис",
+		'set_default_list' => "Уобичајено Попис обавеза",
+		'set_default_list_descr' => "(нпр. користи за АПИ позиве)",
 		'My Tiny Todolist' => "РОКОВНИК",
 		'htab_newtask' => "Нови задатак",
 		'htab_search' => "Претрага",

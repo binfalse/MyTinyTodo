@@ -31,6 +31,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "usuario",
+		'set_user' => "Nombre de usuario",
+		'signature' => "firma",
+		'set_default_list' => "Lista de tareas por defecto",
+		'set_default_list_descr' => "(por ejemplo, utilizar para las llamadas API)",
 		'htab_newtask' => 'Tarea nueva',
 		'htab_search' => 'Buscar',
 		'btn_add' => 'Añadir',

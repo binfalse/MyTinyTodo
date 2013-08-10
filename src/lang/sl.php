@@ -29,6 +29,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "uporabnik",
+		'set_user' => "Uporabniško ime",
+		'signature' => "Podpis",
+		'set_default_list' => "Privzeto Seznam opravil",
+		'set_default_list_descr' => "(npr. se uporabljajo za API klice)",
 		'My Tiny Todolist' => "Moj Seznam Nalog",
 		'htab_newtask' => "Naloga",
 		'htab_search' => "Iskalnik",

@@ -29,6 +29,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "használó",
+		'set_user' => "felhasználónév",
+		'signature' => "aláírás",
+		'set_default_list' => "Alapértelmezett Todo List",
+		'set_default_list_descr' => "(pl. használt API hívások)",
 		'My Tiny Todolist' => "My Tiny Todolist",
 		'htab_newtask' => "Új Feladat",
 		'htab_search' => "Keresés",

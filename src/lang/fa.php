@@ -34,6 +34,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "کاربر",
+		'set_user' => "نام کاربری",
+		'signature' => "امضا",
+		'set_default_list' => "پیش فرض لیست TODO",
+		'set_default_list_descr' => "(به عنوان مثال برای تماس های API استفاده می شود)",
 		'My Tiny Todolist' => "مدیریت وظایف",
 		'htab_newtask' => "وظیفه جدید",
 		'htab_search' => "جستجو",

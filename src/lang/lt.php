@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "vartotojas",
+		'set_user' => "Vartotojo vardas",
+		'signature' => "parašas",
+		'set_default_list' => "Įprasta Todo sąrašas",
+		'set_default_list_descr' => "(pvz., naudoti API)",
 		'My Tiny Todolist' => "My Tiny Todolist",
 		'htab_newtask' => "Nauja užduotis",
 		'htab_search' => "Ieškoti",

@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "người sử dụng",
+		'set_user' => "Tên truy nhập",
+		'signature' => "chữ ký",
+		'set_default_list' => "Mặc định Todo Danh sách",
+		'set_default_list_descr' => "(ví dụ sử dụng cho các cuộc gọi API)",
 		'My Tiny Todolist' => "Danh sách các công việc cần làm",
 		'htab_newtask' => "Công việc",
 		'htab_search' => "Tìm kiếm",

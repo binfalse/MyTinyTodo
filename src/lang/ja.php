@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "使い手",
+		'set_user' => "ユーザー名",
+		'signature' => "署名",
+		'set_default_list' => "デフォルトtodoリスト",
+		'set_default_list_descr' => "（例えば、APIの呼び出しに使用される）",
 		'My Tiny Todolist' => "My Tiny Todolist",
 		'htab_newtask' => "新規タスク",
 		'htab_search' => "検索",

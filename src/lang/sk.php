@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "užívateľ",
+		'set_user' => "Užívateľské meno",
+		'signature' => "podpis",
+		'set_default_list' => "Predvolené Todo List",
+		'set_default_list_descr' => "(Napr. použiť pre volanie API)",
 		'My Tiny Todolist' => "My Tiny Todolist",
 		'htab_newtask' => "Nová úloha",
 		'htab_search' => "Hľadať",

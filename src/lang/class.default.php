@@ -29,6 +29,12 @@ class DefaultLang
 
 	private $default_inc = array
 	(
+		'username' => "User",
+		'set_newpass_descr' => "(leave blank if won't change current password)",
+		'set_user' => "Username",
+		'signature' => "Signature",
+		'set_default_list' => "Default Todo List",
+		'set_default_list_descr' => "(e.g. used for API imports)",
 		'My Tiny Todolist' => "My Tiny Todolist",
 		'htab_newtask' => "New task",
 		'htab_search' => "Search",

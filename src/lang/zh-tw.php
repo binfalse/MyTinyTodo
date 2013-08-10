@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "用戶",
+		'set_user' => "用戶名",
+		'signature' => "簽名",
+		'set_default_list' => "默認待辦事項列表",
+		'set_default_list_descr' => "（例如，用於API調用）",
 		'My Tiny Todolist' => "我的小型待辦事項清單",
 		'htab_newtask' => "新增任務",
 		'htab_search' => "查詢",

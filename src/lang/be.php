@@ -25,6 +25,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "Карыстальнік",
+		'set_user' => "Імя карыстальніка",
+		'signature' => "подпіс",
+		'set_default_list' => "Па змаўчанні спіс Todo",
+		'set_default_list_descr' => "(Напрыклад, выкарыстоўваецца для званкоў API)",
 		'My Tiny Todolist' => "Мой сьпіс задач",
 		'tab_newtask' => "новая задача",
 		'tab_search' => "пошук",

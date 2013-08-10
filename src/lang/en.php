@@ -120,6 +120,8 @@ class Lang extends DefaultLang
 		'set_newpass_descr' => "(leave blank if won't change current password)",
 		'set_user' => "Username",
 		'signature' => "Signature",
+		'set_default_list' => "Default Todo List",
+		'set_default_list_descr' => "(e.g. used for API imports)",
 		'set_smartsyntax' => "Smart syntax",
 		'set_smartsyntax_descr' => "(/priority/ task /tags/)",
 		'set_timezone' => "Time zone",

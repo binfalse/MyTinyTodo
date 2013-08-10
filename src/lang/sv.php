@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "Användare",
+		'set_user' => "Användarnamn",
+		'signature' => "namnteckning",
+		'set_default_list' => "Default göra lista",
+		'set_default_list_descr' => "(t ex används för API-anrop)",
 		'My Tiny Todolist' => "My Tiny Todolist",
 		'htab_newtask' => "Ny uppgift",
 		'htab_search' => "Sök",

@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "kullanan",
+		'set_user' => "Kullanıcı Adı",
+		'signature' => "imza",
+		'set_default_list' => "Varsayılan Yapılacaklar Listesi",
+		'set_default_list_descr' => "(örneğin API çağrıları için kullanılır)",
 		'My Tiny Todolist' => "My Tiny Todolist",
 		'htab_newtask' => "Yeni Görev",
 		'htab_search' => "Ara",

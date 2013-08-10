@@ -31,6 +31,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "משתמש",
+		'set_user' => "שם משתמש",
+		'signature' => "חתימה",
+		'set_default_list' => "רשימת Todo ברירת מחדל",
+		'set_default_list_descr' => "(למשל, משמש לשיחות API)",
 		'My Tiny Todolist' => "My Tiny Todolist",
 		'htab_newtask' => "משימה חדשה",
 		'htab_search' => "חיפוש",

@@ -33,6 +33,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "用户",
+		'set_user' => "用户名",
+		'signature' => "签名",
+		'set_default_list' => "默认待办事项列表",
+		'set_default_list_descr' => "（例如，用于API调用）",
 		'My Tiny Todolist' => "我的迷你任务列表",
 		'htab_newtask' => "新任务",
 		'htab_search' => "查询",

@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "Χρήστης",
+		'set_user' => "Όνομα Χρήστη",
+		'signature' => "υπογραφή",
+		'set_default_list' => "Προεπιλογή Todo List",
+		'set_default_list_descr' => "(π.χ. χρησιμοποιούνται για κλήσεις API)",
 		'My Tiny Todolist' => "Η λίστα μου",
 		'htab_newtask' => "Νέα υποχρέωση",
 		'htab_search' => "Αναζήτηση",

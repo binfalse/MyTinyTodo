@@ -89,7 +89,12 @@ class Lang extends DefaultLang
         'a_settings' => "Impostazioni",
         'rss_feed' => "RSS Feed",
         'feed_title' => "%s",
-        'feed_description' => "Nuovi tasks in %s",
+				'feed_description' => "Nuovi tasks in %s",
+				'username' => "utente",
+				'set_user' => "Nome utente",
+				'signature' => "firma",
+				'set_default_list' => "Predefinito Todo List",
+				'set_default_list_descr' => "(ad esempio, utilizzato per le chiamate API)",
 
         /* Settings */
         'set_header' => "Impostazioni",

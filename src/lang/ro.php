@@ -30,6 +30,11 @@ class Lang extends DefaultLang
 
 	var $inc = array
 	(
+		'username' => "utilizator",
+		'set_user' => "Utilizator",
+		'signature' => "semnătură",
+		'set_default_list' => "Implicit Todo List",
+		'set_default_list_descr' => "(de exemplu, utilizat pentru apeluri API)",
 		'My Tiny Todolist' => "Lista mea mică de sarcini",
 		'htab_newtask' => "Sarcină nouă",
 		'htab_search' => "Căutare",
