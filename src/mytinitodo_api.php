@@ -3,35 +3,74 @@
 if (php_sapi_name() != 'cli')
 	die ("not allowed");
 
+function err ($str, $mail)
+{
+	mail ($mail, 'ERROR adding todo item', $str);
+	die ();
+}
+
 function deb ($str)
 {
 	file_put_contents ("/tmp/debug", $str."\n", FILE_APPEND );
 }
 
+function getList ($name, $db, $mail)
+{
+	$t = loadLists ($db, "");
+	foreach ($t["list"] as $list)
+	{
+		if (strcasecmp($list["name"], $name) == 0)
+			return $list["id"];
+	}
+	$newList = addList ($db, $name);
+	if (!$newList['total'] || $newList['total'] < 1)
+		err ("error creating new list.", $mail);
+	return $newList['list'][0]['id'];
+}
+
+function findProp ($prop, &$array)
+{
+	if (preg_match ('/^\s*'.$prop.':(.+)$/mi', $array['body'], $match))
+	{
+		$array[$prop] = trim ($match[1]);
+		$array['body'] = str_replace ($match[0], "", $array['body']);
+	}
+	else
+		$array[$prop] = null;
+}
+
+function parseMail ($body, $db, $mail)
+{
+	$parsed = array ();
+	
+	$parsed['body'] = $body;
+	
+	findProp ('priority', $parsed);
+	findProp ('tags', $parsed);
+	findProp ('duedate', $parsed);
+	findProp ('list', $parsed);
+	if ($parsed['list'])
+		$parsed['list'] = getList ($parsed['list'], $db, $mail);
+	else
+		$parsed['list'] = getList ("MailImport", $db, $mail);
+	
+	if (!$parsed['list'])
+		err ("no list defined (neither in mail nor in config)", $mail);
+	
+	return $parsed;
+}
+
+define ("__API__", true);
+
 if(!defined('MTTPATH'))
 	define('MTTPATH', dirname(__FILE__) .'/');
-require_once (MTTPATH.'db/config.php');
+require_once (MTTPATH.'init.php');
 
-$_GET['API'] = true;
+$db = DBConnection::instance();
 
-$_GET['signature'] = $config['signature'];
-if (!$_GET['signature'])
+define ("__SIG__", Config::get('signature'));
+if (!__SIG__)
 	die ("error: no signature");
-
-if (isset ($config['defaultlist']))
-	$_POST['list'] = $config['defaultlist'];
-else
-	$_POST['list'] = 1;
-
-function get_include_contents($filename) {
-	if (is_file(MTTPATH.$filename))
-	{
-		ob_start();
-		require_once (MTTPATH.$filename);
-		return ob_get_clean();
-  }
-  return false;
-}
 
 if (isset ($argv[1]))
 {
@@ -44,12 +83,16 @@ if (isset ($argv[1]))
 			require_once (MTTPATH."third-party/MimeMailParser.class.php");
 			$Parser = new MimeMailParser();
 			$Parser->setStream(STDIN);
-			$_GET['fullNewTask'] = 1;
-			$_POST['title'] = $Parser->getHeader('subject');
-			$_POST['note'] = $Parser->getMessageBody('text');
-			$json = get_include_contents('ajax.php');
-			/*deb(var_export ($json, true));
-			deb("t: " . $json);*/
+			$parsed = parseMail ($Parser->getMessageBody('text'), $db, $Parser->getHeader('from'));
+			if ($parsed['body'])
+				$parsed['body'] = trim($parsed['body'])."\n\n";
+			else
+				$parsed['body'] = "";
+			$parsed['body'] .= "Received ".date("F j, Y, g:i A")." via mail from: ".$Parser->getHeader('from');
+			
+			$t = addTask ($db, $parsed['list'], $Parser->getHeader('subject'), null, $parsed['body'], $parsed['priority'], $parsed['duedate'], $parsed['tags']);
+			if (!$t['total'] || $t['total'] < 1)
+				err ("error creating new task.", $Parser->getHeader('from'));
 			break;
 		default:
 			die ("do not understand");

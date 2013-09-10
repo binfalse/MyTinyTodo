@@ -7,6 +7,7 @@
 
 if(!defined('MTTPATH')) define('MTTPATH', dirname(__FILE__) .'/');
 
+require_once(MTTPATH. 'functions.php');
 require_once(MTTPATH. 'common.php');
 require_once(MTTPATH. 'db/config.php');
 
@@ -46,81 +47,13 @@ require_once(MTTPATH. 'lang/'.Config::get('lang').'.php');
 $_mttinfo = array();
 
 $needAuth = (Config::get('password') != '') ? 1 : 0;
-if($needAuth && !isset($dontStartSession) && !isset ($_GET['API']))
+if($needAuth && !isset($dontStartSession) && !defined ("__API__"))
 {
 	ini_set('session.use_cookies', true);
 	ini_set('session.use_only_cookies', true);
 	session_set_cookie_params(1209600, url_dir(Config::get('url')=='' ? $_SERVER['REQUEST_URI'] : Config::get('url'))); # 14 days session cookie lifetime
 	session_name('mtt-session');
 	session_start();
-}
-
-function prepareList($row)
-{
-	$taskview = (int)$row['taskview'];
-	return array(
-		'id' => $row['id'],
-		'name' => htmlarray($row['name']),
-		'sort' => (int)$row['sorting'],
-		'published' => $row['published'] ? 1 :0,
-		'showCompl' => $taskview & 1 ? 1 : 0,
-		'showNotes' => $taskview & 2 ? 1 : 0,
-		'hidden' => $taskview & 4 ? 1 : 0,
-		);
-}
-
-function loadLists ($db, $sqlWhere)
-{
-	$t = array();
-	$t['total'] = 0;
-	$q = $db->dq("SELECT * FROM {$db->prefix}lists $sqlWhere ORDER BY ow ASC, id ASC");
-	while($r = $q->fetch_assoc($q))
-	{
-		$t['total']++;
-		$l = prepareList($r);
-		$t['list'][$l['id']] = $l;
-	}
-	return $t;
-}
-
-function is_logged()
-{
-	if (Config::get('signature') != '' && (_get("signature") == Config::get('signature') || _post("signature") == Config::get('signature')))
-		return true;
-	if(!isset($_SESSION['logged']) || !$_SESSION['logged']) return false;
-	return true;
-}
-
-function is_readonly()
-{
-	$needAuth = (Config::get('password') != '') ? 1 : 0;
-	if($needAuth && !is_logged()) return true;
-	return false;
-}
-
-function timestampToDatetime($timestamp)
-{
-	$format = Config::get('dateformat') .' '. (Config::get('clock') == 12 ? 'g:i A' : 'H:i');
-	return formatTime($format, $timestamp);
-}
-
-function formatTime($format, $timestamp=0)
-{
-	$lang = Lang::instance();
-	if($timestamp == 0) $timestamp = time();
-	$newformat = strtr($format, array('F'=>'%1', 'M'=>'%2'));
-	$adate = explode(',', date('n,'.$newformat, $timestamp), 2);
-	$s = $adate[1];
-	if($newformat != $format)
-	{
-		$am = (int)$adate[0];
-		$ml = $lang->get('months_long');
-		$ms = $lang->get('months_short');
-		$F = $ml[$am-1];
-		$M = $ms[$am-1];
-		$s = strtr($s, array('%1'=>$F, '%2'=>$M));
-	}
-	return $s;
 }
 
 function _e($s)
@@ -170,7 +103,7 @@ function get_mttinfo($v)
 
 function jsonExit($data)
 {
-	if (!isset ($_GET['API']))
+	if (!defined ("__API__"))
 	{
 		header('Content-type: application/json; charset=utf-8');
 		echo json_encode($data);
