@@ -29,7 +29,6 @@ if(isset($_POST['save']))
 	elseif(!_post('allowpassword')) Config::set('password', '');
 	Config::set('smartsyntax', (int)_post('smartsyntax'));
 	Config::set('username', $_POST['username']);
-	Config::set('defaultlist', $_POST['defaultlist']);
 	// Do not set invalid timezone
 	try {
 	    $tz = trim(_post('timezone'));
@@ -132,10 +131,6 @@ function timezoneIdentifiers()
     return $a;
 }
 
-$tmplists = loadLists ($db, '');
-$lists = array ();
-foreach ($tmplists['list'] as $k => $v)
-	$lists[$v['id']] = $v['name'];
 
 
 header('Content-type:text/html; charset=utf-8');
@@ -252,13 +247,6 @@ header('Content-type:text/html; charset=utf-8');
 <td>
  <label><input type="radio" name="showdate" value="1" <?php if(_c('showdate')) echo 'checked="checked"'; ?> /><?php _e('set_enabled');?></label> <br/>
  <label><input type="radio" name="showdate" value="0" <?php if(!_c('showdate')) echo 'checked="checked"'; ?> /><?php _e('set_disabled');?></label>
-</td>
-</tr>
-
-<tr>
-<th><?php _e('set_default_list');?>:<br/><span class="descr"><?php _e('set_default_list_descr');?></th>
-<td>
-	<select name="defaultlist"><?php echo selectOptions($lists, _c('defaultlist')); ?></select>
 </td>
 </tr>
 

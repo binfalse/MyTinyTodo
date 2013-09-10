@@ -57,8 +57,4 @@ $config['dateformatshort'] = 'j M';
 $config['showdate'] = 0;
 
 
-# Default Todo list (e.g. for Mail-Import).
-$config['defaultlist'] = 1;
-
-
 ?>

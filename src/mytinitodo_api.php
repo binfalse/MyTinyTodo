@@ -213,7 +213,6 @@ if (isset ($argv[1]))
 				$where = "";
 			
 			$stmnt = "SELECT {$db->prefix}lists.name, {$db->prefix}todolist.title, {$db->prefix}todolist.duedate, {$db->prefix}todolist.prio FROM {$db->prefix}lists LEFT JOIN {$db->prefix}todolist ON {$db->prefix}lists.id={$db->prefix}todolist.list_id WHERE {$db->prefix}todolist.compl=0 $where ORDER BY {$db->prefix}todolist.duedate DESC, {$db->prefix}todolist.prio DESC";
-			deb ($stmnt);
 			
 			$today =  date ("Y-m-d");
 			$tomorrow = date ("Y-m-d", time () + 60*60*24);
