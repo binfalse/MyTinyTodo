@@ -15,6 +15,9 @@ if(!is_int(Config::get('firstdayofweek')) || Config::get('firstdayofweek')<0 || 
 
 define('TEMPLATEPATH', MTTPATH. 'themes/'.Config::get('template').'/');
 
+// extend cookie
+if (isset ($_COOKIE["MTTAUTH"]))
+	setcookie ("MTTAUTH", $_COOKIE["MTTAUTH"], time()+60*60*24*30*3);
 
 if (is_logged () || Config::get('password') == '')
 	require(TEMPLATEPATH. 'index.php');

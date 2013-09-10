@@ -1,8 +1,11 @@
-<?php 
-if (Config::get('password') == '' || (isset ($_POST['pasword']) && isset ($_POST['user']) && $_POST['pasword'] == Config::get('password') && $_POST['user'] == Config::get('username')))
+<?php
+$hash = sha1 (Config::get('password').Config::get('username').$_SERVER['SERVER_ADDR'].$_SERVER['HTTP_HOST']);
+if (Config::get('password') == '' || (isset ($_COOKIE["MTTAUTH"]) && $_COOKIE["MTTAUTH"] == $hash) || (isset ($_POST['pasword']) && isset ($_POST['user']) && $_POST['pasword'] == Config::get('password') && $_POST['user'] == Config::get('username')))
 {
 	session_regenerate_id(1);
 	$_SESSION['logged'] = 1;
+	if (isset ($_POST['stay_loggedin']) && $_POST['stay_loggedin'] == 1)
+		setcookie ("MTTAUTH", $hash, time()+60*60*24*30*3);
 	header('Location: '.$_SERVER['REQUEST_URI']);
 }
 else
@@ -37,6 +40,7 @@ else
 <form method='POST' action='<?php echo $_SERVER['REQUEST_URI'];?>'>
 <?php _e('set_user');?>: <input type='text' id='user' name='user'/>
 <?php _e('password');?>: <input type='password' id='password' name='pasword'/>
+<?php _e('stay_loggedin');?><input type='checkbox' name='stay_loggedin' value='1'/>
 <input type='submit' value='<?php _e('btn_login');?>'/>
 </form>
 </div>

@@ -237,6 +237,7 @@ elseif(isset($_POST['login']))
 elseif(isset($_POST['logout']))
 {
 	if (isset ($_SESSION['logged'])) unset($_SESSION['logged']);
+	if (isset ($_COOKIE["MTTAUTH"])) setcookie ("MTTAUTH", '', 1);
 	$t = array('logged' => 0);
 	jsonExit($t);
 }
