@@ -5,6 +5,19 @@
 	Licensed under the GNU GPL v3 license. See file COPYRIGHT for details.
 */
 
+# check if it is installed correctly, otherwise open setup.php
+if (!file_exists('./db/config.php'))
+{
+	$url = preg_replace('/index.php.*$/', "", $_SERVER["REQUEST_URI"]);
+	if ($url[strlen ($url) - 1] != "/")
+		$url .= "/";
+	$url .= "setup.php";
+	
+	header('Location: '.$url);
+	die ("Please install MyTinyTodo: $url");
+}
+
+
 require_once('./init.php');
 
 $lang = Lang::instance();
