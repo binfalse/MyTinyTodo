@@ -6,10 +6,14 @@
 	Licensed under the GNU GPL v3 license. See file COPYRIGHT for details.
 */
 
-set_exception_handler('myExceptionHandler');
+# check if config file exists
+if (!file_exists('./db/config.php'))
+{
+	if (!touch ('./db/config.php'))
+		exitMessage ("Config file ('db/config.php') does not exist and cannot create it");
+}
 
-# Check old config file (prior v1.3)
-require_once('./db/config.php');
+require_once('./init.php');
 if(!isset($config['db']))
 {
 	if(isset($config['mysql'])) {
@@ -26,7 +30,6 @@ if(!isset($config['db']))
 
 if($config['db'] != '') 
 {
-	require_once('./init.php');
 	if($needAuth && !is_logged())
 	{
 		die("Access denied!<br> Disable password protection or Log in.");
@@ -355,13 +358,6 @@ function testConnect(&$error)
 		return 0;
 	}
 	return 1;
-}
-
-function myExceptionHandler($e)
-{
-	echo '<br><b>Fatal Error:</b> \''. $e->getMessage() .'\' in <i>'. $e->getFile() .':'. $e->getLine() . '</i>'.
-		"\n<pre>". $e->getTraceAsString() . "</pre>\n";
-	exit;
 }
 
 

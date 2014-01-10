@@ -1,5 +1,6 @@
 <?php
 
+set_exception_handler('myExceptionHandler');
 
 function prepareTaskRow($r, $lists)
 {
