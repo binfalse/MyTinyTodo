@@ -22,13 +22,20 @@ if(isset($_POST['save']))
 	$langs = getLangs();
 	Config::$params['lang']['options'] = array_keys($langs);
 	Config::set('lang', _post('lang'));
-	if(isset($_POST['password']) && $_POST['password'] != '')
+	if ($_POST['allowpassword'])
 	{
-		Config::set('password', $_POST['password']);
+		if (isset($_POST['password']) && isset($_POST['username']) && !empty($_POST['password']) && !empty($_POST['username']))
+		{
+			Config::set('password', $_POST['password']);
+			Config::set('username', $_POST['username']);
+		}
 	}
-	elseif(!_post('allowpassword')) Config::set('password', '');
+	else
+	{
+		Config::set('password', '');
+		Config::set('username', '');
+	}
 	Config::set('smartsyntax', (int)_post('smartsyntax'));
-	Config::set('username', $_POST['username']);
 	// Do not set invalid timezone
 	try {
 	    $tz = trim(_post('timezone'));

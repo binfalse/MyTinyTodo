@@ -2150,18 +2150,18 @@ function showSettings()
 function resetSignature()
 {
 	// TODO: translate
-   if (!confirm("Do you really want to reset the signature?\nThis will disconnect all applications."))
-       return false;
-   if(_mtt.pages.current.pageClass != 'settings') return false;
-   var params = { resetSignature:'resetSignature' };
-   $.post(_mtt.mttUrl + 'settings.php', params, function(json){
-       if(json.saved) {
-           $('#signature').html (json.signature);
-       }
-   }, 'json');
-   return false;
+	if (!confirm (_mtt.lang.get('reallyResetSignature')))
+		return false;
+	if(_mtt.pages.current.pageClass != 'settings')
+		return false;
+	var params = { resetSignature:'resetSignature' };
+	$.post(_mtt.mttUrl + 'settings.php', params, function(json)
+	{
+		if(json.saved)
+			$('#signature').html (json.signature);
+	}, 'json');
+	return false;
 }
-	
 
 function saveSettings(frm)
 {

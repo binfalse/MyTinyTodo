@@ -25,6 +25,7 @@ class DefaultLang
 		'deleteList' => "This will delete current list with all tasks in it.\\nAre you sure?",
 		'clearCompleted' => "This will delete all completed tasks in the list.\\nAre you sure?",
 		'settingsSaved' => "Settings saved. Reloading...",
+		'reallyResetSignature' => "Do you really want to reset the signature?\\This will disconnect all applications.",
 	);
 
 	private $default_inc = array
