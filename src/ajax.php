@@ -6,16 +6,15 @@
 	Licensed under the GNU GPL v3 license. See file COPYRIGHT for details.
 */ 
 
-if (!defined ("__API__"))
-{
-	set_error_handler('myErrorHandler');
-	set_exception_handler('myExceptionHandler');
-}
-
 if(!defined('MTTPATH'))
 	define('MTTPATH', dirname(__FILE__) .'/');
 
 require_once(MTTPATH.'init.php');
+
+if (!defined ("__API__"))
+{
+	set_error_handler('myErrorHandler');
+}
 
 $db = DBConnection::instance();
 

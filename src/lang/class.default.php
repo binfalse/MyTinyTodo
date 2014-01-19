@@ -33,6 +33,7 @@ class DefaultLang
 		'set_newpass_descr' => "(leave blank if won't change current password)",
 		'set_user' => "Username",
 		'signature' => "Signature",
+		'reset signature' => "reset signature",
 		'stay_loggedin' => "Remember me",
 		'set_default_list' => "Default Todo List",
 		'set_default_list_descr' => "(e.g. used for API imports)",

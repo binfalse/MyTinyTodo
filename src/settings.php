@@ -50,6 +50,17 @@ if(isset($_POST['save']))
 	jsonExit($t);
 }
 
+if(isset($_POST['resetSignature']))
+{
+	$t = array();
+	$sig = md5(uniqid(rand(), true));
+	Config::set('signature', $sig);
+	Config::save();
+	$t['signature'] = $sig;
+	$t['saved'] = 1;
+	jsonExit($t);
+}
+
 
 function _c($key)
 {
@@ -173,7 +184,8 @@ header('Content-type:text/html; charset=utf-8');
 <tr>
 <th><?php _e('set_newpass');?>:<br/><span class="descr"><?php _e('set_newpass_descr');?></span></th>
 <td> <input type="password" name="password" <?php if(_c('password')=='') echo "disabled"; ?> /><br />
-<?php _e('signature');?>: <?php echo _c('signature');?> 
+<span><?php _e('signature');?>:</span> <span id="signature"><?php echo _c('signature');?></span>
+<span id="resetSignature" title="<?php _e('reset signature');?>"></span>
 </td>
 </tr>
 

@@ -2142,9 +2142,26 @@ function showSettings()
 	$('#page_ajax').load(_mtt.mttUrl+'settings.php?ajax=yes',null,function(){ 
 		//showhide($('#page_ajax').addClass('mtt-page-settings'), $('#page_tasks'));
 		_mtt.pageSet('ajax','settings');
+		$("#resetSignature").click(function(e) {e.preventDefault();resetSignature()});
 	})
 	return false;
 }
+
+function resetSignature()
+{
+	// TODO: translate
+   if (!confirm("Do you really want to reset the signature?\nThis will disconnect all applications."))
+       return false;
+   if(_mtt.pages.current.pageClass != 'settings') return false;
+   var params = { resetSignature:'resetSignature' };
+   $.post(_mtt.mttUrl + 'settings.php', params, function(json){
+       if(json.saved) {
+           $('#signature').html (json.signature);
+       }
+   }, 'json');
+   return false;
+}
+	
 
 function saveSettings(frm)
 {
